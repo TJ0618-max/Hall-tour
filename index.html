@@ -1,1 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f1ec">
+<title>HALL NOTE</title>
+<style>
+:root{
+  --bg:#f6f3ef;
+  --paper:#fffdf9;
+  --paper2:#faf7f2;
+  --ink:#242321;
+  --sub:#77716b;
+  --line:#e7e1d9;
+  --accent:#a77b68;
+  --accent-soft:#eee2da;
+  --gold:#b18a42;
+  --danger:#a86660;
+  --shadow:0 10px 32px rgba(48,39,31,.06);
+  --r:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.top{
+  position:sticky;top:0;z-index:50;
+  background:rgba(246,243,239,.92);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(231,225,217,.9);
+}
+.brand{
+  max-width:1080px;margin:auto;padding:18px 18px 13px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px
+}
+.brand-mark{font-size:11px;letter-spacing:2.8px;color:var(--accent);font-weight:800}
+.brand-title{font-family:Georgia,"Times New Roman",serif;font-size:20px;letter-spacing:1px;margin-top:2px}
+.brand-right{font-size:11px;color:var(--sub);white-space:nowrap}
+.tabs{
+  max-width:1080px;margin:auto;padding:0 14px 12px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:5px
+}
+.tabs button{
+  border:0;background:transparent;color:#807970;
+  border-radius:12px;padding:10px 5px;font-size:13px;font-weight:750;
+  transition:.18s
+}
+.tabs button.active{background:var(--ink);color:#fff}
+main{max-width:1080px;margin:auto;padding:20px 16px 70px}
+.page-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
+  margin:5px 2px 17px
+}
+.page-head h2{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:26px;font-weight:500;letter-spacing:-.4px}
+.page-head .desc{margin:5px 0 0;font-size:11px;color:var(--sub)}
+.count{font-size:11px;color:var(--sub);white-space:nowrap}
+.panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:16px;margin-bottom:14px
+}
+.addbar{display:flex;gap:8px}
+.addbar input{flex:1;min-width:0}
+input,textarea,select{
+  width:100%;border:1px solid var(--line);background:#fffdfb;border-radius:12px;
+  padding:11px 12px;color:var(--ink);outline:none;transition:.18s
+}
+input:focus,textarea:focus,select:focus{border-color:#c9a998;box-shadow:0 0 0 3px rgba(167,123,104,.08)}
+textarea{min-height:105px;resize:vertical;line-height:1.55}
+.btn{
+  border:0;border-radius:12px;padding:10px 14px;font-weight:750;font-size:12px
+}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.soft{background:var(--accent-soft);color:#705345}
+.btn.gray{background:#eeeae5;color:#625b55}
+.btn.danger{background:#f4e4e1;color:var(--danger)}
+.btn.small{padding:7px 10px;font-size:11px}
+.cards{display:grid;gap:12px}
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:19px;
+  overflow:hidden;box-shadow:var(--shadow)
+}
+.card-head{
+  padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  transition:.15s
+}
+.card-head:active{background:#faf7f2}
+.card-left{min-width:0}
+.card-name{font-size:16px;font-weight:800;letter-spacing:-.2px}
+.card-meta{font-size:11px;color:var(--sub);margin-top:5px}
+.card-score{text-align:right;min-width:75px}
+.score-big{font-family:Georgia,serif;font-size:18px;color:var(--gold)}
+.score-small{font-size:10px;color:var(--sub);margin-top:3px}
+.chev{font-size:18px;color:#aaa19a;margin-left:4px}
+.detail{border-top:1px solid var(--line);padding:17px;background:#fffdf9}
+.summary{
+  display:grid;grid-template-columns:1.25fr repeat(3,1fr);gap:7px;margin-bottom:14px
+}
+.summary-box{
+  background:var(--paper2);border:1px solid var(--line);border-radius:14px;padding:11px;text-align:center
+}
+.summary-box.main{background:#f1e7df;border-color:#e4d3c8}
+.summary-box b{display:block;font-family:Georgia,serif;font-size:18px;font-weight:500}
+.summary-box.main b{font-size:23px}
+.summary-box span{display:block;margin-top:4px;font-size:9px;color:var(--sub);font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.field label{display:block;font-size:10px;font-weight:800;color:#756e68;margin:0 0 6px}
+.section-title{
+  display:flex;align-items:center;gap:8px;margin:21px 0 10px;
+  font-size:13px;font-weight:850;letter-spacing:-.2px
+}
+.section-title:before{content:"";width:3px;height:14px;background:var(--accent);border-radius:3px}
+.note{
+  background:#f8f4ef;border:1px solid var(--line);border-radius:13px;
+  padding:11px 12px;color:#70675f;font-size:11px;line-height:1.55
+}
+.checklist{display:grid;gap:7px}
+.checkrow{
+  border:1px solid var(--line);border-radius:13px;padding:10px 11px;background:#fff
+}
+.checkq{font-size:12px;line-height:1.45;margin-bottom:8px}
+.checkrating{
+  display:grid;grid-template-columns:28px 1fr 28px 1fr;align-items:center;gap:4px
+}
+.person{font-size:10px;font-weight:800;color:#80776f}
+.stars{display:flex;gap:0;align-items:center}
+.star{
+  border:0;background:none;padding:0 1px;font-size:23px;line-height:1;color:#d8d1ca
+}
+.star.on{color:var(--gold)}
+.mini-stars .star{font-size:21px}
+.notes{display:grid;gap:10px}
+.choice{display:flex;gap:7px}
+.choice button{
+  flex:1;border:1px solid var(--line);background:#fff;border-radius:11px;
+  padding:10px;font-size:11px;font-weight:750;color:#77706a
+}
+.choice button.sel{background:var(--accent-soft);border-color:#d8bcae;color:#65493d}
+.action-row{display:flex;justify-content:flex-end;margin-top:13px}
+.money{font-variant-numeric:tabular-nums}
+.empty{padding:34px 18px;text-align:center;color:var(--sub);font-size:12px}
+.compare-wrap{overflow:auto;border:1px solid var(--line);border-radius:15px;background:#fff}
+.compare{border-collapse:collapse;width:100%;min-width:1030px;font-size:11px}
+.compare th,.compare td{border-bottom:1px solid var(--line);padding:10px 7px;text-align:center;white-space:nowrap}
+.compare th{background:#f7f3ee;font-weight:800;color:#69615b}
+.compare td:first-child,.compare th:first-child{text-align:left;position:sticky;left:0;background:#fffdf9;z-index:2}
+.compare th:first-child{background:#f7f3ee;z-index:3}
+.best{font-weight:900;color:#5c3f34;background:#eee0d8!important}
+.calendar-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.calendar-nav b{font-family:Georgia,serif;font-size:18px;font-weight:500}
+.calendar{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#fff
+}
+.dow,.day{min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.dow{padding:8px 3px;text-align:center;background:#f7f3ee;font-size:10px;font-weight:800;color:#837a73}
+.day{min-height:92px;padding:6px 5px;position:relative}
+.day:nth-child(7n){border-right:0}
+.daynum{font-size:11px;font-weight:800}
+.day.sun .daynum{color:#b56e69}.day.sat .daynum{color:#6e89a5}
+.event{margin-top:5px;border-radius:7px;padding:4px 5px;font-size:9px;line-height:1.3;cursor:pointer}
+.event.visit{background:#eee2da;color:#644c40}
+.event.manual{background:#e9edf2;color:#4d6175}
+.calendar-help{margin-top:9px;font-size:10px;color:var(--sub)}
+.toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:11px}
+.muted{color:var(--sub);font-size:11px}
+.schedule-list{display:grid;gap:8px}
+.schedule-item{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border:1px solid var(--line);border-radius:13px;padding:11px 12px;background:#fff
+}
+.schedule-date{font-weight:800;font-size:12px}.schedule-memo{font-size:11px;color:var(--sub);margin-top:3px}
+.kicker{font-size:10px;color:var(--accent);font-weight:850;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:6px}
+@media(max-width:680px){
+  .brand{padding-top:15px}
+  .brand-right{display:none}
+  main{padding-top:17px}
+  .summary{grid-template-columns:1.2fr 1fr 1fr}
+  .summary-box:last-child{display:none}
+  .grid3{grid-template-columns:1fr}
+  .day{min-height:76px}
+}
+@media(min-width:760px){
+  .tabs{max-width:1080px}
+  .cards{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">
+    <div><div class="brand-mark">WEDDING JOURNAL</div><div class="brand-title">HALL NOTE</div></div>
+    <div class="brand-right">TAEHYUNG × JINA</div>
+  </div>
+  <nav class="tabs" id="tabs"></nav>
+</div>
+<main id="app"></main>
 
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig={
+  apiKey:"AIzaSyBdvjlimIEoa5Vn0LC5mE3DWw7BWlaCoro",
+  authDomain:"hall-tour.firebaseapp.com",
+  projectId:"hall-tour",
+  storageBucket:"hall-tour.firebasestorage.app",
+  messagingSenderId:"628949771227",
+  appId:"1:628949771227:web:080a329828a1920dd43dfe"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+const DOC=db.collection("weddingTourData").doc("main");
+
+const CHECKLIST={
+  "주차장":[
+    "주차장 입구를 찾기 쉬운가?","주차 안내 직원이 있는가?","주차장 → 홀 이동 동선이 원활한가?",
+    "주차장에서 홀까지 가는 엘리베이터/계단 확인. (엘리베이터 대기시간도 확인)",
+    "안내 표지판이 충분한가?","유모차/휠체어 이동이 원활한가?","엘리베이터 안에 예식장 안내가 잘 되어있는가?",
+    "다른 상가로 인해 복잡한가?","주말 예식 여러 타임이 겹칠 때 주차가 감당될 것 같은가?"
+  ],
+  "로비":[
+    "다른 예식 하객과 동선이 섞이지 않는가?","로비의 원활함, 쾌적함 확인","화장실에 줄이 생기는가?",
+    "신부 입장 전에 하객들이 제대로 착석해 있는가?","직원의 응대는 친절한가?"
+  ],
+  "홀 내부":[
+    "홀 내부의 층고나 홀의 분위기가 맘에 드는가?","하객석에서 무대가 잘 보이는가?",
+    "기둥 때문에 시야가 가려지는 좌석은 없는가?","스크린의 크기와 위치는 적절한가?",
+    "신랑, 신부 입장이 잘 보이는가?","버진로드가 너무 짧거나 길지는 않은가?",
+    "음향이 울리거나 답답하지 않은가?","조명이 너무 어둡거나 눈부시지 않은가?"
+  ],
+  "연회장":[
+    "예식홀 → 연회장의 경로가 원활한가?","연회장 내부 간격과 느낌은 쾌적한가?"
+  ]
+};
+
+let data={stealth:[],consult:[],schedules:[]};
+let tab="stealth",openStealth=null,openConsult=null,cal=new Date();
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function avg(a){let x=a.filter(v=>Number(v)>0);return x.length?x.reduce((s,v)=>s+Number(v),0)/x.length:0}
+function fmt(v){return v?Number(v).toFixed(1):"-"}
+function norm(s){return String(s||"").trim().toLowerCase()}
+function findStealth(name){return data.stealth.find(x=>norm(x.name)===norm(name))}
+function findConsult(name){return data.consult.find(x=>norm(x.name)===norm(name))}
+function venueNames(){const m=new Map();[...data.stealth,...data.consult].forEach(x=>{if(x.name&&!m.has(norm(x.name)))m.set(norm(x.name),x.name)});return [...m.values()]}
+function stealthPersonAvg(x,p){const a=[];Object.values(x?.ratings||{}).forEach(cat=>Object.values(cat||{}).forEach(v=>{if(v?.[p]>0)a.push(Number(v[p]))}));return avg(a)}
+function stealthCategoryAvg(x,cat){const a=[];(CHECKLIST[cat]||[]).forEach((_,i)=>{const r=x?.ratings?.[cat]?.[i]||{};if(r.taehyung>0)a.push(Number(r.taehyung));if(r.jina>0)a.push(Number(r.jina))});return avg(a)}
+function stealthOverall(x){if(!x)return 0;let a=[];Object.values(x.ratings||{}).forEach(cat=>Object.values(cat||{}).forEach(v=>{if(v?.taehyung>0)a.push(Number(v.taehyung));if(v?.jina>0)a.push(Number(v.jina))}));return avg(a)}
+function consultRating(x){return Number(x?.rating)||0}
+function overallForName(name){const s=findStealth(name),c=findConsult(name),a=stealthOverall(s),b=consultRating(c);return a&&b?(a+b)/2:(a||b||0)}
+function visitEvents(){return [...data.stealth.filter(x=>x.date).map(x=>({date:x.date,name:x.name,type:"암행"})),...data.consult.filter(x=>x.date).map(x=>({date:x.date,name:x.name,type:"상담"}))]}
+
+function stars(v,who,kind,key){
+  v=Number(v)||0;
+  return `<div class="stars mini-stars">${[1,2,3,4,5].map(n=>`<button aria-label="${n}점" class="star ${n<=v?"on":""}" onclick="setRating('${who}','${kind}','${key}',${n})">★</button>`).join("")}</div>`;
+}
+function renderTabs(){
+  const arr=[["stealth","암행투어"],["consult","상담투어"],["compare","종합비교"],["calendar","일정"]];
+  document.getElementById("tabs").innerHTML=arr.map(([k,l])=>`<button class="${tab===k?"active":""}" onclick="tab='${k}';render()">${l}</button>`).join("");
+}
+function render(){
+  renderTabs();
+  const app=document.getElementById("app");
+  app.innerHTML=tab==="stealth"?renderStealth():tab==="consult"?renderConsult():tab==="compare"?renderCompare():renderCalendar();
+}
+
+function renderStealth(){
+  return `<div class="page-head"><div><div class="kicker">Secret Visit</div><h2>암행투어</h2><div class="desc">현장에서 느낀 것들을 두 사람의 시선으로 기록</div></div><div class="count">${data.stealth.length}개</div></div>
+  <div class="panel"><div class="addbar"><input id="newS" placeholder="웨딩홀 이름을 입력하세요"><button class="btn primary" onclick="addVenue('stealth')">추가</button></div></div>
+  <div class="cards">${data.stealth.length?data.stealth.map(renderStealthCard).join(""):`<div class="panel empty">첫 번째 웨딩홀을 추가해 보세요.</div>`}</div>`;
+}
+function renderStealthCard(x){
+  const ta=stealthPersonAvg(x,"taehyung"),ji=stealthPersonAvg(x,"jina"),all=stealthOverall(x);
+  return `<div class="card"><div class="card-head" onclick="openStealth=openStealth==='${x.id}'?null:'${x.id}';render()">
+    <div class="card-left"><div class="card-name">${esc(x.name)}</div><div class="card-meta">${x.date?esc(x.date):"방문일 미정"}${x.time?" · "+esc(x.time):""}</div></div>
+    <div class="card-score"><div class="score-big">★ ${fmt(all)}</div><div class="score-small">태형 ${fmt(ta)} · 진아 ${fmt(ji)}</div></div><div class="chev">${openStealth===x.id?"⌃":"⌄"}</div>
+  </div>${openStealth===x.id?renderStealthDetail(x):""}</div>`;
+}
+function renderStealthDetail(x){
+  return `<div class="detail">
+    <div class="summary">
+      <div class="summary-box main"><b>★ ${fmt(stealthOverall(x))}</b><span>암행 전체 평균</span></div>
+      <div class="summary-box"><b>${fmt(stealthPersonAvg(x,"taehyung"))}</b><span>태형</span></div>
+      <div class="summary-box"><b>${fmt(stealthPersonAvg(x,"jina"))}</b><span>진아</span></div>
+      <div class="summary-box"><b>${fmt(stealthCategoryAvg(x,"주차장"))}</b><span>주차장</span></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>방문일</label><input type="date" value="${esc(x.date||"")}" onchange="updateStealth('${x.id}','date',this.value)"></div>
+      <div class="field"><label>방문시간</label><input type="time" value="${esc(x.time||"")}" onchange="updateStealth('${x.id}','time',this.value)"></div>
+    </div>
+    <div class="section-title">현장 체크리스트</div>
+    <div class="note">하객을 볼 것. 실제 운영의 문제점은 하객 표정과 동선에서 더 잘 보인다.</div>
+    ${Object.entries(CHECKLIST).map(([cat,items])=>`<div class="section-title">${cat}</div><div class="checklist">${items.map((q,i)=>{const r=x.ratings?.[cat]?.[i]||{};return `<div class="checkrow"><div class="checkq">${esc(q)}</div><div class="checkrating"><span class="person">태형</span>${stars(r.taehyung,"taehyung","stealth",x.id+"|"+cat+"|"+i)}<span class="person">진아</span>${stars(r.jina,"jina","stealth",x.id+"|"+cat+"|"+i)}</div></div>`}).join("")}</div>`).join("")}
+    <div class="section-title">메모</div><div class="notes">
+      ${[["장점","직접 느낀 장점"],["단점","직접 느낀 단점"],["불편","내가 하객이라면 불편할 점"],["질문","계약 전에 반드시 물어볼 것"]].map(([k,l])=>`<div class="field"><label>${l}</label><textarea onchange="updateStealth('${x.id}','${k}',this.value)" placeholder="기록해 두세요.">${esc(x.notes?.[k]||"")}</textarea></div>`).join("")}
+    </div>
+    <div class="action-row"><button class="btn danger small" onclick="deleteVenue('stealth','${x.id}')">기록 삭제</button></div>
+  </div>`;
+}
+
+function renderConsult(){
+  return `<div class="page-head"><div><div class="kicker">Meeting</div><h2>상담투어</h2><div class="desc">견적과 조건, 상담 내용을 한 곳에</div></div><div class="count">${data.consult.length}개</div></div>
+  <div class="panel"><div class="addbar"><input id="newC" placeholder="웨딩홀 이름을 입력하세요"><button class="btn primary" onclick="addVenue('consult')">추가</button></div></div>
+  <div class="cards">${data.consult.length?data.consult.map(renderConsultCard).join(""):`<div class="panel empty">첫 번째 상담 기록을 추가해 보세요.</div>`}</div>`;
+}
+function renderConsultCard(x){
+  return `<div class="card"><div class="card-head" onclick="openConsult=openConsult==='${x.id}'?null:'${x.id}';render()">
+    <div class="card-left"><div class="card-name">${esc(x.name)}</div><div class="card-meta">${x.date?esc(x.date):"방문일 미정"}${x.time?" · "+esc(x.time):""}</div></div>
+    <div class="card-score"><div class="score-big">★ ${x.rating||0}</div><div class="score-small">${esc(x.discounted||x.total||"견적 미입력")}</div></div><div class="chev">${openConsult===x.id?"⌃":"⌄"}</div>
+  </div>${openConsult===x.id?renderConsultDetail(x):""}</div>`;
+}
+function renderConsultDetail(x){
+  return `<div class="detail">
+    <div class="summary">
+      <div class="summary-box main"><b>★ ${x.rating||0}</b><span>상담 평점</span></div>
+      <div class="summary-box"><b>${esc(x.discounted||"-")}</b><span>할인 견적</span></div>
+      <div class="summary-box"><b>${esc(x.meal||"-")}</b><span>식대</span></div>
+      <div class="summary-box"><b>${esc(x.guarantee||"-")}</b><span>보증인원</span></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>방문일</label><input type="date" value="${esc(x.date||"")}" onchange="updateConsult('${x.id}','date',this.value)"></div>
+      <div class="field"><label>방문시간</label><input type="time" value="${esc(x.time||"")}" onchange="updateConsult('${x.id}','time',this.value)"></div>
+      <div class="field"><label>상담 담당자</label><input value="${esc(x.manager||"")}" onchange="updateConsult('${x.id}','manager',this.value)" placeholder="이름"></div>
+      <div class="field"><label>총 견적</label><input class="money" value="${esc(x.total||"")}" onchange="updateConsult('${x.id}','total',this.value)" placeholder="예: 3,500만원"></div>
+      <div class="field"><label>할인받은 견적</label><input class="money" value="${esc(x.discounted||"")}" onchange="updateConsult('${x.id}','discounted',this.value)" placeholder="예: 3,200만원"></div>
+      <div class="field"><label>식대</label><input value="${esc(x.meal||"")}" onchange="updateConsult('${x.id}','meal',this.value)" placeholder="예: 65,000원"></div>
+      <div class="field"><label>보증인원</label><input value="${esc(x.guarantee||"")}" onchange="updateConsult('${x.id}','guarantee',this.value)" placeholder="예: 250명"></div>
+      <div class="field"><label>예식 가능 일정</label><input value="${esc(x.available||"")}" onchange="updateConsult('${x.id}','available',this.value)" placeholder="가능한 날짜/시간"></div>
+    </div>
+    <div class="section-title">시식 · 주류</div>
+    <div class="grid2">
+      <div><label class="muted">시식</label><div class="choice">${["해봄","안 해봄"].map(v=>`<button class="${x.tasting===v?"sel":""}" onclick="updateConsult('${x.id}','tasting','${v}')">${v}</button>`).join("")}</div></div>
+      <div><label class="muted">주류</label><div class="choice">${["포함","미포함"].map(v=>`<button class="${x.alcohol===v?"sel":""}" onclick="updateConsult('${x.id}','alcohol','${v}')">${v}</button>`).join("")}</div></div>
+    </div>
+    <div class="section-title">총 평점</div>${stars(x.rating,"","consult",x.id)}
+    <div class="section-title">메모</div><textarea onchange="updateConsult('${x.id}','memo',this.value)" placeholder="계약 특전, 서비스, 특이사항 등을 기록하세요.">${esc(x.memo||"")}</textarea>
+    <div class="action-row"><button class="btn danger small" onclick="deleteVenue('consult','${x.id}')">기록 삭제</button></div>
+  </div>`;
+}
+
+function renderCompare(){
+  const names=venueNames();
+  const rows=names.map(name=>{
+    const s=findStealth(name),c=findConsult(name);
+    return {name,ta:stealthPersonAvg(s,"taehyung"),ji:stealthPersonAvg(s,"jina"),sa:stealthOverall(s),cr:consultRating(c),total:overallForName(name),cats:Object.keys(CHECKLIST).map(cat=>stealthCategoryAvg(s,cat)),c:c||{}};
+  }).sort((a,b)=>b.total-a.total);
+  const max={total:Math.max(0,...rows.map(r=>r.total)),sa:Math.max(0,...rows.map(r=>r.sa)),ta:Math.max(0,...rows.map(r=>r.ta)),ji:Math.max(0,...rows.map(r=>r.ji)),cr:Math.max(0,...rows.map(r=>r.cr)),...Object.fromEntries(Object.keys(CHECKLIST).map((_,i)=>["cat"+i,Math.max(0,...rows.map(r=>r.cats[i]||0))]))};
+  return `<div class="page-head"><div><div class="kicker">Overview</div><h2>종합비교</h2><div class="desc">두 기록을 하나의 표에서 비교</div></div><div class="count">${rows.length}개</div></div>
+  <div class="panel"><div class="muted">암행투어와 상담투어에 같은 이름으로 등록한 웨딩홀은 자동으로 하나로 묶입니다. 최고점은 강조됩니다.</div></div>
+  <div class="compare-wrap"><table class="compare"><thead><tr><th>웨딩홀</th><th>종합</th><th>암행</th><th>태형</th><th>진아</th>${Object.keys(CHECKLIST).map(x=>`<th>${x}</th>`).join("")}<th>상담</th><th>할인 견적</th><th>식대</th><th>보증인원</th></tr></thead><tbody>
+  ${rows.length?rows.map(r=>`<tr><td><b>${esc(r.name)}</b></td>
+  <td class="${r.total&&r.total===max.total?"best":""}">${fmt(r.total)}</td>
+  <td class="${r.sa&&r.sa===max.sa?"best":""}">${fmt(r.sa)}</td>
+  <td class="${r.ta&&r.ta===max.ta?"best":""}">${fmt(r.ta)}</td>
+  <td class="${r.ji&&r.ji===max.ji?"best":""}">${fmt(r.ji)}</td>
+  ${r.cats.map((v,i)=>`<td class="${v&&v===max["cat"+i]?"best":""}">${fmt(v)}</td>`).join("")}
+  <td class="${r.cr&&r.cr===max.cr?"best":""}">${r.cr||"-"}</td><td>${esc(r.c.discounted||"-")}</td><td>${esc(r.c.meal||"-")}</td><td>${esc(r.c.guarantee||"-")}</td></tr>`).join(""):`<tr><td colspan="12" style="text-align:center;padding:30px">웨딩홀을 추가하면 비교표가 만들어집니다.</td></tr>`}
+  </tbody></table></div>`;
+}
+
+function renderCalendar(){
+  const y=cal.getFullYear(),m=cal.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),cells=[];
+  for(let i=0;i<first.getDay();i++)cells.push(`<div class="day"></div>`);
+  for(let d=1;d<=last.getDate();d++){
+    const date=`${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`,ev=visitEvents().filter(e=>e.date===date),manual=data.schedules.filter(e=>e.date===date),dow=new Date(y,m,d).getDay();
+    cells.push(`<div class="day ${dow===0?"sun":""} ${dow===6?"sat":""}" onclick="addSchedule('${date}')"><div class="daynum">${d}</div>
+      ${ev.map(e=>`<div class="event visit" title="방문일은 해당 카드에서 수정">${esc(e.type+" · "+e.name)}</div>`).join("")}
+      ${manual.map(e=>`<div class="event manual" onclick="event.stopPropagation();editSchedule('${e.id}')">${esc(e.time?e.time+" ":"")}${esc(e.memo||"일정")}</div>`).join("")}
+    </div>`);
+  }
+  const sorted=[...data.schedules].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  return `<div class="page-head"><div><div class="kicker">Calendar</div><h2>일정</h2><div class="desc">방문일은 암행·상담 카드에서 자동으로 표시됩니다.</div></div></div>
+  <div class="panel"><div class="calendar-nav"><button class="btn gray small" onclick="cal.setMonth(cal.getMonth()-1);render()">‹</button><b>${y}년 ${m+1}월</b><button class="btn gray small" onclick="cal.setMonth(cal.getMonth()+1);render()">›</button></div>
+  <div class="calendar">${["일","월","화","수","목","금","토"].map(x=>`<div class="dow">${x}</div>`).join("")}${cells.join("")}</div>
+  <div class="calendar-help">방문일은 달력에서 수정하지 않고 해당 웨딩홀 카드에서 변경합니다. 날짜를 누르면 일반 일정을 추가할 수 있습니다.</div></div>
+  <div class="panel"><div class="toolbar"><b>일반 일정</b><button class="btn primary small" onclick="addSchedule()">일정 추가</button></div>
+  <div class="schedule-list">${sorted.length?sorted.map(e=>`<div class="schedule-item"><div><div class="schedule-date">${esc(e.date)} ${esc(e.time||"")}</div><div class="schedule-memo">${esc(e.memo||"")}</div></div><button class="btn gray small" onclick="editSchedule('${e.id}')">수정</button></div>`).join(""):`<div class="empty">등록된 일정이 없습니다.</div>`}</div></div>`;
+}
+
+async function save(){
+  try{await DOC.set({data:JSON.stringify(data),updatedAt:firebase.firestore.FieldValue.serverTimestamp()})}
+  catch(e){alert("저장 오류: "+e.message)}
+}
+function addVenue(type){
+  const el=document.getElementById(type==="stealth"?"newS":"newC"),name=el.value.trim();if(!name)return;
+  const x={id:id(),name,date:"",time:""};if(type==="stealth")x.ratings={};else x.rating=0;
+  data[type].push(x);el.value="";save();render();
+}
+function updateStealth(idv,key,val){
+  const x=data.stealth.find(a=>a.id===idv);if(!x)return;
+  if(key==="date"||key==="time")x[key]=val;else{x.notes=x.notes||{};x.notes[key]=val}
+  save();render();
+}
+function updateConsult(idv,key,val){const x=data.consult.find(a=>a.id===idv);if(!x)return;x[key]=val;save();render()}
+function deleteVenue(type,idv){if(!confirm("이 기록을 삭제할까요?"))return;data[type]=data[type].filter(x=>x.id!==idv);save();render()}
+function setRating(who,kind,key,v){
+  if(kind==="consult"){const x=data.consult.find(a=>a.id===key);if(x){x.rating=v;save();render()}return}
+  const [sid,cat,idx]=key.split("|"),x=data.stealth.find(a=>a.id===sid);if(!x)return;
+  x.ratings=x.ratings||{};x.ratings[cat]=x.ratings[cat]||[];x.ratings[cat][idx]=x.ratings[cat][idx]||{};x.ratings[cat][idx][who]=v;save();render();
+}
+function addSchedule(date){
+  const d=date||new Date().toISOString().slice(0,10);
+  const memo=prompt("일정 내용을 입력하세요.");if(memo===null)return;
+  const time=prompt("시간을 입력하세요. 예: 14:00","")||"";
+  data.schedules.push({id:id(),date:d,time,memo});save();render();
+}
+function editSchedule(idv){
+  const x=data.schedules.find(a=>a.id===idv);if(!x)return;
+  const memo=prompt("메모 수정",x.memo||"");if(memo===null)return;
+  const time=prompt("시간 수정",x.time||"");if(time===null)return;
+  const action=confirm("확인을 누르면 저장, 취소하면 삭제 여부를 다시 묻습니다.");
+  if(action){x.memo=memo;x.time=time;save();render();return}
+  if(confirm("이 일정을 삭제할까요?")){data.schedules=data.schedules.filter(a=>a.id!==idv);save();render()}
+}
+DOC.onSnapshot(s=>{
+  if(s.exists&&s.data().data){try{data=JSON.parse(s.data().data)||data}catch(e){}}
+  render();
+},e=>{
+  console.error(e);
+  document.getElementById("app").innerHTML=`<div class="panel"><b>Firebase 연결 오류</b><p class="muted">${esc(e.message)}</p></div>`;
+});
+render();
+</script>
+</body>
+</html>
